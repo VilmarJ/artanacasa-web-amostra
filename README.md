@@ -53,7 +53,6 @@ github/
 │   ├── esqueci_senha.html      # Recuperação de senha
 │   └── nova_senha.html         # Redefinição de senha
 ```
-
 ---
 
 ## Segurança
@@ -61,3 +60,9 @@ github/
 - Senhas armazenadas com hash bcrypt
 - Credenciais carregadas via variáveis de ambiente
 - Arquivos sensíveis (`credentials.json`, `token.pickle`, `.env`, banco de dados) protegidos pelo `.gitignore`
+
+  ---
+
+  # Imagem da tela de início do sistema
+  <img width="1890" height="502" alt="image" src="https://github.com/user-attachments/assets/b04b5f3e-46a4-49cf-b3f1-c07c1cd41984" />
+
