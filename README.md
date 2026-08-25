@@ -42,14 +42,14 @@ github/
 ├── drive_utils.py              # Autenticação com o Google Drive
 ├── static/
 │   ├── styles_esqueci.css      # Estilização da tela de esqueci a senha
-│   ├── styles_index.css        # Estilização da pagina principal
+│   ├── styles_index.css        # Estilização da pagina principal 
 │   ├── styles_inicio.css       # Estilização da tela incial pós login
 │   ├── styles_reset.css        # Estilização da tela de nova senha
 │
 ├── templates/
 │   ├── index.html              # Tela de login
 │   ├── register.html           # Cadastro de usuário
-│   ├── inicio.html             # Tela principal
+│   ├── inicio.html             # Tela principal (desenvolvido com html + javascript internos)
 │   ├── esqueci_senha.html      # Recuperação de senha
 │   └── nova_senha.html         # Redefinição de senha
 ```
@@ -58,6 +58,6 @@ github/
 
 ## Segurança
 
-- Senhas armazenadas com hash bcrypt (nunca em texto puro)
+- Senhas armazenadas com hash bcrypt
 - Credenciais carregadas via variáveis de ambiente
 - Arquivos sensíveis (`credentials.json`, `token.pickle`, `.env`, banco de dados) protegidos pelo `.gitignore`
