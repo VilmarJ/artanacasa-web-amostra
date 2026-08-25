@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Artana - Esqueci minha senha</title>
+    <link rel="stylesheet" href="/static/styles_esqueci.css">
+</head>
+<body>
+
+    <form action="/verificar-reset" method="POST" class="form-box">
+        <h2>Recuperar Senha</h2>
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <label>Usuário:</label>
+        <input type="text" name="usuario" required>
+
+        <label>E-mail:</label>
+        <input type="email" name="email" required>
+
+        <button type="submit">Verificar</button>
+
+        <div style="text-align:center; margin-top:12px;">
+            <a href="/">Voltar para o login</a>
+        </div>
+    </form>
+
+</body>
+</html>

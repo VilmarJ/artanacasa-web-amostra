@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Artana - Nova Senha</title>
+    <link rel="stylesheet" href="/static/styles_reset.css">
+</head>
+<body>
+
+    <form action="/resetar-senha" method="POST" class="form-box">
+        <h2>Definir Nova Senha</h2>
+
+        <input type="hidden" name="usuario" value="{{ usuario }}">
+
+        <label>Nova Senha:</label>
+        <input type="password" name="nova_senha" required>
+
+        <button type="submit">Salvar Nova Senha</button>
+    </form>
+
+</body>
+</html>

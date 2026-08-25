@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Artana - Integração de Produtos</title>
+    <link rel="stylesheet" href="/static/styles_inicio.css">
+    <script>
+        async function consultar() {
+            const data = document.getElementById("dataCriacao").value;
+            if (!data) {
+                alert("Informe a data de criação!");
+                return;
+            }
+
+            document.getElementById("status").innerText = "Carregando produtos...";
+            document.querySelector(".produtos").innerHTML = "";
+
+            try {
+                const resp = await fetch("/consultar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ dataCriacao: data })
+                });
+                const resultado = await resp.json();
+                const lista = resultado.produtos || [];
+                const container = document.querySelector(".produtos");
+                container.innerHTML = "";
+
+                if (lista.length === 0) {
+                    document.getElementById("status").innerText = "Nenhum produto encontrado.";
+                    return;
+                }
+
+                lista.forEach(p => {
+                    container.innerHTML += `
+                        <div class="produto-card">
+                            <label>
+                                <input type="checkbox" name="produto" value="${p.idProduto}" onchange="toggleDetalhes(this, '${p.idProduto}')">
+                                <strong>${p.codigo}</strong> - ${p.nome}
+                            </label>
+                            <div id="detalhes-${p.idProduto}" class="input-container" style="display:none;">
+                                <label>Nome</label>
+                                <input type="text" id="nome-${p.idProduto}">
+                                <label>Código</label>
+                                <input type="text" id="codigo-${p.idProduto}">
+                                <label>Preço</label>
+                                <input type="number" id="preco-${p.idProduto}">
+                                <label>Marca</label>
+                                <input type="text" id="marca-${p.idProduto}">
+                                <label>Categoria</label>
+                                <input type="text" id="categoria-${p.idProduto}">
+                                <label>NCM</label>
+                                <input type="text" id="ncm-${p.idProduto}">
+                                <label>Garantia</label>
+                                <input type="text" id="garantia-${p.idProduto}">
+                                <label>EAN</label>
+                                <input type="text" id="gtin-${p.idProduto}">
+                                <label>CEST</label>
+                                <input type="text" id="cest-${p.idProduto}">
+                                <label>Unidade de Medida</label>
+                                <input type="text" id="unidade-${p.idProduto}">
+                                <label>Peso</label>
+                                <input type="text" id="peso_bruto-${p.idProduto}">
+                                <label>Altura da Embalagem</label>
+                                <input type="text" id="alturaEmbalagem-${p.idProduto}">
+                                <label>Largura da Embalagem</label>
+                                <input type="text" id="larguraEmbalagem-${p.idProduto}">
+                                <label>Comprimento da Embalagem</label>
+                                <input type="text" id="comprimentoEmbalagem-${p.idProduto}">
+                                <label>Descrição Geral</label>
+                                <input type="text" id="descricao_complementar-${p.idProduto}">
+                                <label>Descrição Resumida</label>
+                                <input type="text" id="descricao_resumida-${p.idProduto}">
+                                <label>Acompanha</label>
+                                <input type="text" id="acompanha-${p.idProduto}">
+                                <label>Palavra-chave</label>
+                                <input type="text" id="palavra_chave-${p.idProduto}" placeholder="Separe as palavras-chave por vírgula.">
+                                <label>Descrição SEO</label>
+                                <input type="text" id="seo_description-${p.idProduto}" placeholder="Digite a descrição SEO da página">
+                                <div class="img-dimensoes">
+                                    <label>Altura da Imagem:</label>
+                                    <input type="text" id="imgHeight-${p.idProduto}" value="381" style="width:70px; margin-right:10px;">
+                                    <label>Largura da Imagem:</label>
+                                    <input type="text" id="imgWidth-${p.idProduto}" value="503" style="width:70px;">
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                document.getElementById("status").innerText = `${lista.length} produto(s) encontrado(s).`;
+
+            } catch (e) {
+                document.getElementById("status").innerText = "Erro ao carregar produtos.";
+                console.error(e);
+            }
+        }
+
+        async function toggleDetalhes(checkbox, idProduto) {
+            const container = document.getElementById(`detalhes-${idProduto}`);
+            if (checkbox.checked) {
+                try {
+                    const resp = await fetch("/detalhes_produto", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ idProduto })
+                    });
+                    const detalhes = await resp.json();
+
+                    document.getElementById(`nome-${idProduto}`).value = detalhes.nome || "";
+                    document.getElementById(`codigo-${idProduto}`).value = detalhes.codigo || "";
+                    document.getElementById(`preco-${idProduto}`).value = detalhes.preco || 0;
+                    document.getElementById(`marca-${idProduto}`).value = detalhes.marca || "";
+                    document.getElementById(`categoria-${idProduto}`).value = detalhes.categoria || "";
+                    document.getElementById(`ncm-${idProduto}`).value = detalhes.ncm || "";
+                    document.getElementById(`garantia-${idProduto}`).value = detalhes.garantia || "";
+                    document.getElementById(`gtin-${idProduto}`).value = detalhes.gtin || "";
+                    document.getElementById(`cest-${idProduto}`).value = detalhes.cest || "";
+                    document.getElementById(`unidade-${idProduto}`).value = detalhes.unidade || "";
+                    document.getElementById(`peso_bruto-${idProduto}`).value = detalhes.peso_bruto
+                        ? (detalhes.peso_bruto / 1000).toFixed(3) : "";
+                    document.getElementById(`alturaEmbalagem-${idProduto}`).value = detalhes.alturaEmbalagem || "";
+                    document.getElementById(`larguraEmbalagem-${idProduto}`).value = detalhes.larguraEmbalagem || "";
+                    document.getElementById(`comprimentoEmbalagem-${idProduto}`).value = detalhes.comprimentoEmbalagem || "";
+                    document.getElementById(`descricao_complementar-${idProduto}`).value = detalhes.descricao_complementar || "";
+                    document.getElementById(`palavra_chave-${idProduto}`).value = detalhes.palavra_chave || "";
+
+                } catch (e) {
+                    console.error("Erro ao buscar detalhes:", e);
+                }
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+
+        function mostrarOverlay() {
+            document.getElementById("overlay").classList.add("active");
+        }
+
+        function esconderOverlay() {
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        function tratarMensagem(msg) {
+            if (!msg) return "";
+            try {
+                const json = JSON.parse(msg);
+                if (json.message) msg = json.message;
+            } catch(e) {}
+            try { msg = decodeURIComponent(escape(msg)); } catch(e) {}
+            msg = msg.replace(/\\'/g, "'")
+                     .replace(/['"]?status['"]?:\s*['"]?error['"]?,?/gi, "")
+                     .replace(/['"]?message['"]?:\s*/gi, "")
+                     .replace(/[\{\}]/g, "")
+                     .trim();
+            return msg;
+        }
+
+        async function enviarMagazord() {
+            const selecionados = [];
+
+            document.querySelectorAll("input[name=produto]:checked").forEach(el => {
+                const id = el.value;
+
+                const nome     = document.getElementById(`nome-${id}`).value;
+                const codigo   = document.getElementById(`codigo-${id}`).value;
+                const preco    = parseFloat(document.getElementById(`preco-${id}`).value || 0);
+                const marca    = document.getElementById(`marca-${id}`).value;
+                const categoria = document.getElementById(`categoria-${id}`).value;
+
+                if (!nome || !codigo || !preco || !marca || !categoria) {
+                    alert(`Preencha todos os campos obrigatórios do produto: ${codigo || id}`);
+                    return;
+                }
+
+                selecionados.push({
+                    idProduto:              id,
+                    nome,
+                    codigo,
+                    preco,
+                    marca,
+                    categoria,
+                    ncm:                    document.getElementById(`ncm-${id}`).value,
+                    garantia:               document.getElementById(`garantia-${id}`).value,
+                    gtin:                   document.getElementById(`gtin-${id}`).value,
+                    cest:                   document.getElementById(`cest-${id}`).value,
+                    unidade:                document.getElementById(`unidade-${id}`).value,
+                    peso_bruto:             parseFloat(document.getElementById(`peso_bruto-${id}`).value || 0),
+                    alturaEmbalagem:        document.getElementById(`alturaEmbalagem-${id}`).value,
+                    larguraEmbalagem:       document.getElementById(`larguraEmbalagem-${id}`).value,
+                    comprimentoEmbalagem:   document.getElementById(`comprimentoEmbalagem-${id}`).value,
+                    descricao_complementar: document.getElementById(`descricao_complementar-${id}`).value,
+                    descricao_resumida:     document.getElementById(`descricao_resumida-${id}`).value,
+                    acompanha:              document.getElementById(`acompanha-${id}`).value,
+                    palavra_chave:          document.getElementById(`palavra_chave-${id}`).value.replace(/;/g, ","),
+                    seo_description:        document.getElementById(`seo_description-${id}`).value,
+                    imgWidth:               parseInt(document.getElementById(`imgWidth-${id}`).value || 503),
+                    imgHeight:              parseInt(document.getElementById(`imgHeight-${id}`).value || 381)
+                });
+            });
+
+            if (selecionados.length === 0) {
+                alert("Selecione ao menos um produto para enviar.");
+                return;
+            }
+
+            mostrarOverlay();
+            document.getElementById("overlay-content").innerHTML = `
+                <div class="spinner"></div>
+                <div class="loading-text">Integrando dados...</div>
+            `;
+
+            try {
+                const resp = await fetch("/integrar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(selecionados)
+                });
+                const data = await resp.json();
+
+                let html = `<h2>Resultado da Integração</h2>`;
+
+                if (data.integrados && data.integrados.length > 0) {
+                    html += `<h3>Integrados com sucesso:</h3>`;
+                    data.integrados.forEach(prod => {
+                        const midia = prod.nome_midia ? ` (mídia: ${prod.nome_midia})` : "";
+                        html += `
+                            <div class="msg success">
+                                <strong>${prod.codigo} (${prod.tipo})${midia}</strong><br>
+                                ${tratarMensagem(prod.mensagem || "")}
+                            </div>`;
+                    });
+                }
+
+                if (data.falhas && data.falhas.length > 0) {
+                    html += `<h3>Falhas:</h3>`;
+                    data.falhas.forEach(f => {
+                        const midia = f.nome_midia ? ` (mídia: ${f.nome_midia})` : "";
+                        html += `
+                            <div class="msg error">
+                                <strong>${f.codigo} (${f.tipo})${midia}</strong><br>
+                                ${tratarMensagem(f.mensagem)}
+                            </div>`;
+                    });
+                }
+
+                html += `<button class="btn" onclick="esconderOverlay()">Fechar</button>`;
+                document.getElementById("overlay-content").innerHTML = html;
+
+            } catch (e) {
+                console.error("Erro ao enviar:", e);
+                document.getElementById("overlay-content").innerHTML = `
+                    <h2>Erro na integração!</h2>
+                    <p>${e}</p>
+                    <button class="btn" onclick="esconderOverlay()">Fechar</button>
+                `;
+            }
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Integração de Produtos - Web Artana</h1>
+    <div class="usuario-logado">
+        <p>Olá, {{ usuario }}!</p>
+        <a href="/sair" class="logout-btn">Sair</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2 style="text-align:center;">Consultar Produtos</h2>
+
+    <div style="text-align:center; margin-bottom:15px;">
+        <label>Data de Criação do Produto:
+            <input type="date" id="dataCriacao">
+        </label>
+        <button class="btn" onclick="consultar()">Consultar</button>
+    </div>
+
+    <h3 style="text-align:center;">Selecione os produtos para envio</h3>
+    <div id="status"></div>
+    <div class="produtos"></div>
+
+    <div style="text-align:center; margin-top:20px;">
+        <button class="btn" onclick="enviarMagazord()">Enviar para a Magazord</button>
+    </div>
+</div>
+
+<div id="overlay">
+    <div id="overlay-content" class="overlay-content"></div>
+</div>
+
+</body>
+</html>

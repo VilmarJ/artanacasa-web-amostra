@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Artana - Login</title>
+    <link rel="stylesheet" href="/static/styles_index.css">
+</head>
+<body>
+    <main class="container">
+        <form action="/login" method="POST">
+            <h1>Login - Web Artana</h1>
+
+            {% if erro %}
+                <p style="color:red; text-align:center;">{{ erro }}</p>
+            {% endif %}
+
+            {% if msg %}
+                <p style="color:green; text-align:center;">{{ msg }}</p>
+            {% endif %}
+
+            <div class="input-box">
+                <input name="usuario" placeholder="Usuário" required>
+            </div>
+
+            <div class="input-box">
+                <input name="senha" placeholder="Senha" type="password" required>
+            </div>
+
+            <div class="remember-forgot">
+                <a href="/esqueci-senha">Esqueci a senha</a>
+            </div>
+
+            <button class="login" type="submit">Login</button>
+
+            <div class="register-link">
+                <p>Não tem uma conta? <a href="/cadastro">Cadastre-se</a></p>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

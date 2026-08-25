@@ -1,0 +1,90 @@
+/* Fundo geral */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #0e0e0e; /* Preto suave */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Caixa do formulário */
+.form-box {
+    background: #1a1a1a;
+    padding: 35px 45px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    width: 360px;
+    animation: fadeIn 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título */
+h2 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+/* Inputs */
+.form-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 18px;
+    background: #101010;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.form-box input::placeholder {
+    color: #777;
+}
+
+.form-box input:focus {
+    border-color: #666;
+    background: #151515;
+    outline: none;
+}
+
+/* Botão */
+.form-box button {
+    width: 107%; /* igual ao login */
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    background: linear-gradient(135deg, #ffffff, #9e9e9e);
+    color: #000;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.form-box button:hover {
+    background: linear-gradient(135deg, #dcdcdc, #ffffff);
+    transform: scale(1.03);
+}
+
+/* Mensagem de erro */
+.erro {
+    color: #ff4d4d;
+    background: #330000;
+    padding: 8px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+}
